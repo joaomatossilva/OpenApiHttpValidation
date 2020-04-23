@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenApiHttpValidation.Tests
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "files", "files", "{68F86F6E-2D37-465D-A04C-474FD06A53A4}"
 	ProjectSection(SolutionItems) = preProject
-		ReadeMe.md = ReadeMe.md
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global
