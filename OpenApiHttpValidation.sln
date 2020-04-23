@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenApiHttpValidation", "Op
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenApiHttpValidation.Tests", "OpenApiHttpValidation.Tests\OpenApiHttpValidation.Tests.csproj", "{99F2A924-DFF8-4A97-BB28-9F7F67516A96}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "files", "files", "{68F86F6E-2D37-465D-A04C-474FD06A53A4}"
+	ProjectSection(SolutionItems) = preProject
+		ReadeMe.md = ReadeMe.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
