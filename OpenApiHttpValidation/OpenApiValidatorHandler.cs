@@ -27,38 +27,22 @@ namespace OpenApiHttpValidation
             var response = await base.SendAsync(request, cancellationToken);
 
             var url = request.RequestUri.AbsolutePath;
-            var operationType = ToOperationType(request.Method);
-
-            foreach (var openApiPath in _openApiDocument.Paths)
+            var operation = _openApiDocument.FindOperation(url, request.Method.Method);
+            if (operation == null)
             {
-                if (IsUrlMatch(url, openApiPath.Key))
-                {
-                    if (!openApiPath.Value.Operations.ContainsKey(operationType))
-                    {
-                        continue;
-                    }
-                    var openApiOperation = openApiPath.Value.Operations[operationType];
-
-                    //validate parameters
-
-                    //validate responses
-
-                    return response;
-                }
+                throw new Exception("operation not present on the api specs");
             }
 
-            throw new Exception("operation not present on the api specs");
+            //validate parameters
+
+            //validate responses
+
+
+            return response;
         }
 
-        private bool IsUrlMatch(string path, string openApiPath)
-        {
-            //Very, I mean Very! naive validation of the path
-            var cleanOpenApiPath = Regex.Replace(openApiPath, "{.*}", @"\d|(^([0-9A-Fa-f]{8}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{12})$)");
-            var match = Regex.Match(path, cleanOpenApiPath);
-            return match.Success;
-        }
 
-        private OperationType ToOperationType(HttpMethod method) => 
-            (OperationType)Enum.Parse(typeof(OperationType), method.Method, true);
+
+
     }
 }
