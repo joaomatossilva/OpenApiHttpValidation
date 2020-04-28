@@ -26,6 +26,12 @@ namespace OpenApiHttpValidation.Tests
                             {
                                 {
                                     OperationType.Post, new OpenApiOperation()
+                                    {
+                                        Responses = new OpenApiResponses()
+                                        {
+                                            { "200", new OpenApiResponse() }
+                                        }
+                                    }
                                 }
                             }
                         }

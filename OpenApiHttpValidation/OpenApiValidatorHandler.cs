@@ -7,6 +7,9 @@ using Microsoft.OpenApi.Models;
 
 namespace OpenApiHttpValidation
 {
+    using System.Linq;
+    using Validators.Request;
+
     public class OpenApiValidatorHandler : DelegatingHandler
     {
         private readonly OpenApiDocument _openApiDocument;
@@ -33,10 +36,12 @@ namespace OpenApiHttpValidation
                 throw new Exception("operation not present on the api specs");
             }
 
-            //validate parameters
-
-            //validate responses
-
+            var validator = new RequestValidator();
+            var validation = validator.Validate(operation, new HttpMessageAdapter(response, request));
+            if (validation.Errors.Any())
+            {
+                throw new Exception("validation failed");
+            }
 
             return response;
         }
