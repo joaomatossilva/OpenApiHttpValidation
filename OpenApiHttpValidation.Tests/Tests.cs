@@ -7,15 +7,14 @@ using NUnit.Framework;
 
 namespace OpenApiHttpValidation.Tests
 {
-    public class Tests
+    public abstract class BaseTest
     {
-        private OpenApiDocument document;
-        private HttpClient httpClient;
+        protected OpenApiDocument Document { get; private set; }
 
         [SetUp]
         public void Setup()
         {
-            document = new OpenApiDocument
+            Document = new OpenApiDocument
             {
                 Paths = new OpenApiPaths()
                 {
@@ -29,7 +28,14 @@ namespace OpenApiHttpValidation.Tests
                                     {
                                         Responses = new OpenApiResponses()
                                         {
-                                            { "200", new OpenApiResponse() }
+                                            { "200", new OpenApiResponse()
+                                                {
+                                                    Content = new Dictionary<string, OpenApiMediaType>()
+                                                    {
+                                                        { "text/plain", new OpenApiMediaType() }
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -39,26 +45,6 @@ namespace OpenApiHttpValidation.Tests
                 }
             };
 
-            httpClient = new HttpClient(new OpenApiValidatorHandler(document, new OkHttpHandler()));
-        }
-
-        [Test]
-        public async Task ValidRequestShouldPass()
-        {
-            await httpClient.PostAsync("http://localhost/entity/1", new StringContent("test"));
-            Assert.Pass();
-        }
-
-        [Test]
-        public async Task InvalidMethodRequestShouldThrowException()
-        {
-            Assert.ThrowsAsync<Exception>(async () => await httpClient.GetAsync("http://localhost/entity/1"));
-        }
-
-        [Test]
-        public async Task InvalidPathRequestShouldThrowException()
-        {
-            Assert.ThrowsAsync<Exception>(async () => await httpClient.PostAsync("http://localhost/someother/1", new StringContent("test")));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace OpenApiHttpValidation
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
@@ -30,7 +31,21 @@
 
         public override Task<string> ResponseBody => response.Content.ReadAsStringAsync();
 
-        public override Task<IDictionary<string, string>> ResponseHeaders =>
-            Task.FromResult((IDictionary<string, string>)response.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value)));
+        public override Task<IDictionary<string, string>> ResponseHeaders
+        {
+            get
+            {
+                var responseHeaders = response.Headers.ToDictionary(x => x.Key, x => string.Join(",", x.Value));
+                foreach (var httpContentHeader in response.Content.Headers)
+                {
+                    if (!responseHeaders.ContainsKey(httpContentHeader.Key))
+                    {
+                        responseHeaders.Add(httpContentHeader.Key, string.Join(",", httpContentHeader.Value));
+                    }
+                }
+
+                return Task.FromResult<IDictionary<string, string>>(responseHeaders);
+            }
+        }
     }
 }
